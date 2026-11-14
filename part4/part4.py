@@ -1,4 +1,4 @@
-# calculate the statistical results for each country
+# Calculate the statistical results for each country.
 import numpy as np
 import member2
 import part1
@@ -50,3 +50,34 @@ def compare_countries(dataset, countries, analysis_class, run_regression, indica
             "p_value": regression["p_value"],
         })
     return results
+
+
+# Take the result dictionaries and print the statistics for each country.
+def dispaly_comparison(results):
+    for results in results:
+
+        # Display the country and the indicator selected for the comparison.
+    print("\ncountry:", result["country"])
+    print("Indicator:", result["indicator"])
+
+
+    # Display Part 2's summary of the unemployment rate and its extreme years.
+    print("\nUnemployment rate (%)")
+    print("Period:", result["rate_period"])
+    print("Number of observations:", result["rate_n"])
+    print("Mean:", round(result["mean"], 2))
+    print("Median:", round(result["median"], 2))
+    print("Minimum:", round(result["minimum"], 2))
+    print("Maximum:", round(result["maximum"], 2))
+    print("Standard deviation", round(result["std"], 2))
+    print("Highest unemployment year:", result["peak_year"])
+    print("Lowest unemployment year:", result["low_year"])
+
+
+# Display member3's results and the sample used for the model.
+    print("\nGDP growth and annual unemplpyment change")
+    print("Period:", result["model_period"])
+    print("Pearson correlation:", result["model_n"])
+    print("Regression slope:", round(result["slope"], 3))
+    print("R-squared:", round(result["r_squared"], 3))
+    print("Slope p-value:", format(result["p-value"], ".3g"))
