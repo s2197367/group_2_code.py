@@ -3,7 +3,7 @@
 #users can choose an analysis by entering a number
 
 #function 1: display the menu
-def show_menu()：
+def show_menu():
     print("\n==========MAIN MENU==========")
     print("1. Explore unemployment trends")
     print("2. GDP-Unemployment correlation")
@@ -15,9 +15,9 @@ def show_menu()：
 
 #Function 2:Ask the user to select a country
 def select_country(dataset):
-      print("\nAvailable countries")
+    print("\nAvailable countries")
     # Display countries with numbers
-    for i, country in enumerate (dataset. countries, 1)：
+    for i, country in enumerate(dataset. countries, 1):
         print(i, "-", country)
     #keep asking until a valid country is selected
     while True:
