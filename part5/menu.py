@@ -15,4 +15,15 @@ def show_menu();
 
     #Function 2 :Ask the user to select a country
 def select_country(dataset):
-      
+      print("\nAvailable countries")
+    # Display countries with numbers
+    for i, country in enumerate (dataset. countries, 1)
+        print(i, "-", country)
+        #keep asking until a valid country is selected
+    while True:
+            choice = input("Select a country number:") .strip()
+            if choice.isdigit():
+                number = int(choice)
+                if 1<= number <= len(dataset.countries):
+                    return dataset.countries[number-1]
+                    
