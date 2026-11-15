@@ -32,7 +32,7 @@ def select_country(dataset):
 def select_countries(dataset):
     print("\nAvailable countries:")
     #display countries with numbers
-    for i, country in enumerate(dataset.countries, 1)：
+    for i, country in enumerate(dataset. countries, 1):
         print(i, "-", country)
     while True:
         #example:1, 2, 3 means selecting three countries
@@ -127,7 +127,7 @@ def run_analysis(choice, dataset):
             run_regression,
             indicator
         )
-        display_cmoparison(results)
+        display_comparison(results)
 
 #Function 7:Main function to start the program
 def main():
@@ -135,7 +135,7 @@ def main():
     print("Welcome to the Unemployment Analysis Software!")
     #load the dataset 
     try:
-        dataset, warnings = load_dataset(DEFULT_FILE)
+        dataset, warnings = load_dataset(DEFAULT_FILE)
     except FileNotFoundError:
         print("Error: Data file not found.")
         return
@@ -160,7 +160,7 @@ def main():
             print("Invalid option. Please enter a number from 0-5.")
 
 #Start the program when this file is run directly
-if__name__ == "__main__":
+if __name__ == "__main__":
     main()
             
 
