@@ -3,7 +3,7 @@
 #users can choose an analysis by entering a number
 
 #function 1: display the menu
-def show_menu();
+def show_menu()：
     print("\n==========MAIN MENU==========")
     print("1. Explore unemployment trends")
     print("2. GDP-Unemployment correlation")
@@ -17,7 +17,7 @@ def show_menu();
 def select_country(dataset):
       print("\nAvailable countries")
     # Display countries with numbers
-    for i, country in enumerate (dataset. countries, 1)
+    for i, country in enumerate (dataset. countries, 1)：
         print(i, "-", country)
     #keep asking until a valid country is selected
     while True:
@@ -32,7 +32,7 @@ def select_country(dataset):
 def select_countries(dataset):
     print("\nAvailable countries:")
     #display countries with numbers
-    for i, country in enumerate(dataset.countries, 1)
+    for i, country in enumerate(dataset.countries, 1)：
         print(i, "-", country)
     while True:
         #example:1, 2, 3 means selecting three countries
@@ -71,7 +71,7 @@ def select_indicator():
             print("Invalid selection. Please enter 1 or 2. ")
 
 #Function 5:Ask the user to select a year range
-def select_year(dataset):
+def select_years(dataset):
     
     #part 2 currently supports years from 1991 to 2025
     first_year = max(1991, int(min(dataset.years)))
@@ -105,21 +105,22 @@ def run_analysis(choice, dataset):
         indicator, code = select_indicator()
         display_correlation(country, code)
     #option3: Regression analysis and gragh (part3)
-    elif choice = "3":
+    elif choice == "3":
         country = select_country(dataset)
         indicator, code = select_indicator()
         display_regression(country, code)
+        plot_regression(country, code)
     #option4: Regression diagnostics (part3)
-    elif choice = "4":
+    elif choice == "4":
         country = select_country(dataset)
         indicator, code = select_indicator()
         display_diagnostics(country, code)
         plot_diagnostics(country, code)
     #option5: Compare multiple countries (part 4)
-    elif choice = "5":
-        country = select_country(dataset)
+    elif choice == "5":
+        countries = select_countries(dataset)
         indicator, code = select_indicator()
-        result = compare_countries(
+        results = compare_countries(
             dataset,
             countries, 
             GDPUnemploymentAnalysis,
@@ -134,25 +135,32 @@ def main():
     print("Welcome to the Unemployment Analysis Software!")
     #load the dataset 
     try:
-        dataset, warning = load_sataset(DEFULT_FILE)
-    except FilrNotFoundError:
+        dataset, warnings = load_dataset(DEFULT_FILE)
+    except FileNotFoundError:
         print("Error: Data file not found.")
         return
     #display the dataset summary
     print_data_summary(dataset, warnings)
     #creating analysis object
-    abalysis = GDPUnemploymentAnalysis(dataset)
+    analysis = GDPUnemploymentAnalysis(dataset)
     #keep showing menu until the using choose to exit
     while True:
-        show_menu:
+        show_menu()
         choice = input("Enter your choice(0-5):").strip()
-        if choice == "0"
+        if choice == "0":
             print("Thank you for using the program. Goodbye!")
+            break
+            
         elif choice in ("1", "2", "3", "4", "5"):
             try:
                 run_analysis(choice, dataset)
             except ValueError as error:
-            print("Analysis error:", error)
-            else:
+                print("Analysis error:", error)
+        else:
+            print("Invalid option. Please enter a number from 0-5.")
+
+#Start the program when this file is run directly
+if__name__ == "__main__":
+    main()
             
 
