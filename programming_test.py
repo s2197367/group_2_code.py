@@ -812,7 +812,7 @@ def show_menu():
     print("1. Explore unemployment trends")
     print("2. GDP-Unemployment correlation")
     print("3. GDP-Unemployment regression")
-    print("4, Regression diagnostics")
+    print("4. Regression diagnostics")
     print("5. Compare countries")
     print("0. Exit program")
     print("============================")
@@ -866,7 +866,7 @@ def select_indicator():
     while True:
         print("\n1. Total unemployment")
         print("2. Youth unemployment")
-        choice = input("Select indicator(1 or2: ").strip()
+        choice = input("Select indicator(1 or 2: ").strip()
         if choice == "1":
                 return "total", UNEMPLOYMENT_CODE
         elif choice == "2":
