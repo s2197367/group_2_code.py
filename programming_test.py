@@ -457,15 +457,16 @@ def analyse_countries(dataset, countries, start_year, end_year, indicator="total
 
 
 
-#GDP-Unemployment Analysis class can be used by member 4: comparasion, full available sample with no period selection
+#GDP-Unemployment Analysis class can be used by member 4
 class GDPUnemploymentAnalysis:
     def __init__(self,dataset):
         self.dataset=dataset
 
     def run_correlation(self, country,unemployment_code, start_year=None, end_year=None): 
 
-    #years are none because we want to maximize the sample size
-
+    #The full available sample is used maximise the number of observations.
+    #Since unemployment is measured as an annual change, the first year (1991) is excluded.    
+        
     #pearson correlation analysis
 
         years, x_data, y_data = self.dataset.get_regression_data(
@@ -494,15 +495,14 @@ analysis= None
 
 # In[ ]:
 
-
-#function for printing the results
+ #Display correlation results based on the selected country and unemployment indicator.
 def display_correlation (country, unemployment_code):
     result_corr=analysis.run_correlation(country, unemployment_code)
     if unemployment_code == YOUTH_CODE:
         unemployment_type="Youth Unemployment"
     else:
         unemployment_type="Total Unemployment"
-    print ("CORRELATION RESULTS")  #MAKE BOLD LATER
+    print ("=====CORRELATION RESULTS=====") 
     print(f"Country: {country}")
     print(f"Unemployment Type: {unemployment_type}") #may be we can change unemployment codes as youth_unemp and total_unemp
     print(f"Number of observations: {result_corr['n_observations']}") 
@@ -517,13 +517,16 @@ def display_correlation (country, unemployment_code):
 # In[ ]:
 
 
-#regression analysis
+ #Linear regression analysis
+ #This follows the difference specification of Okun's Law.
 def run_regression(self, country, unemployment_code,start_year=None, end_year=None):
     years, x_data, y_data = self.dataset.get_regression_data(
         country, start_year, end_year,
         unemployment_code=unemployment_code
     )
     reg=stats.linregress(x_data,y_data)
+
+    #Store the regression coefficients and key statistics in a dictionary.
     return {
         "type": "regression",
         "country": country,
@@ -540,14 +543,14 @@ def run_regression(self, country, unemployment_code,start_year=None, end_year=No
 # In[ ]:
 
 
-#print regression results
+#Present regression results in a user-friendly format.
 def display_regression (country, unemployment_code):
     result_reg=run_regression(analysis, country, unemployment_code)
     if unemployment_code==YOUTH_CODE:
         unemployment_type="Youth Unemployment"
     else:
         unemployment_type="Total Unemployment"
-    print ("LINEAR REGRESSION RESULTS")  #MAKE BOLD LATER
+    print ("=====LINEAR REGRESSION RESULTS=====") 
     print(f"Country: {country}")
     print(f"Unemployment Type: {unemployment_type}") #may be we can change unemployment codes as youth_unemp and total_unemp
     print(f"Number of observations: {result_reg['n_observations']}") 
@@ -559,12 +562,12 @@ def display_regression (country, unemployment_code):
         print ("Statistically significant at the 5% level")
     else:
         print ("Not statistically significant at the 5% level")
-    #regression equation for better understanding the model
+ #Regression equation for better understanding the model
     print("Estimated Regression Equation:") 
     print(f"Unemployment Change= {result_reg['intercept']:.3f}"f"+({result_reg['slope']:.3f})*GDP Growth")
 
 
-    #interpretation of the results
+  #Interpretation of the slope based on its sign and value.
     if result_reg['slope']<0:
         direction="decrease"
     elif result_reg['slope']>0:
@@ -589,7 +592,7 @@ def display_regression (country, unemployment_code):
 # In[ ]:
 
 
-#regression plot
+#Visualise the relationship between GDP growth and Unemployment changes.
 def plot_regression (country, unemployment_code, start_year=None, end_year=None):
     result_reg=run_regression(analysis, country, unemployment_code, start_year, end_year)
     years, x_data, y_data=analysis.dataset.get_regression_data(country, unemployment_code=unemployment_code)
@@ -619,6 +622,7 @@ def plot_regression (country, unemployment_code, start_year=None, end_year=None)
 
 
 #diagnostic tests for regression
+#These checks help evaluate the reliability of the model.
 def run_diagnostics(self, country, unemployment_code, start_year=None, end_year=None):
     years, x_data, y_data = self.dataset.get_regression_data(
         country, start_year, end_year,
@@ -632,7 +636,7 @@ def run_diagnostics(self, country, unemployment_code, start_year=None, end_year=
     #predicted values and residuals
     y_pred=result_reg["intercept"]+result_reg["slope"]*x_data
     residuals=y_data-y_pred
-    #Shapiro-Wilk normality test
+    #Shapiro-Wilk test is used to assess residual normality.
     shapiro_stat, shapiro_p=stats.shapiro(residuals)
     return {
         "country": country,
@@ -650,6 +654,9 @@ def run_diagnostics(self, country, unemployment_code, start_year=None, end_year=
 
 
 #displaying the Shapiro_Wilk Test results
+#A p-value below 0.05 indicates evidence against normality.
+#Otherwise, the normality assumption is not rejected.
+
 def display_diagnostics (country, unemployment_code, start_year=None, end_year=None):
     result_diag = run_diagnostics(
         analysis, country, unemployment_code,
@@ -659,7 +666,7 @@ def display_diagnostics (country, unemployment_code, start_year=None, end_year=N
         unemployment_type="Youth Unemployment"
     else:
         unemployment_type="Total Unemployment"
-    print ("REGRESSION DIAGNOSTICS-RESIDUALS NORMALITY TEST")
+    print ("=====REGRESSION DIAGNOSTICS-RESIDUALS NORMALITY TEST=====")
     print (f"Country: {country}")
     print (f"Unemployment Type: {unemployment_type}")
     print (f"Shapiro-Wilk Statistics: {result_diag['shapiro_stat']:.4f} ")
@@ -680,7 +687,7 @@ def display_diagnostics (country, unemployment_code, start_year=None, end_year=N
 # In[ ]:
 
 
-#regression diagnostic plots
+ #Visualise regression residuals to examine model behaviour.
 def plot_diagnostics (country, unemployment_code,start_year=None, end_year=None):
     result_diag=run_diagnostics(analysis, country, unemployment_code, start_year, end_year)
     years= result_diag["years"]
