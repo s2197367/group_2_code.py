@@ -239,7 +239,7 @@ def print_data_summary(dataset, warnings):
                                         len(dataset.years)))
     print("Variables:")
     for name in dataset.variable_names:
-        print(" - %s" % name)
+        print(" - %s" % name.replace(" (modeled ILO estimate)", ""))
 
     if len(warnings) == 0:
         print("Data check: no missing or implausible values found.")
