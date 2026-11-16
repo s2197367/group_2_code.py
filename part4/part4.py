@@ -1,7 +1,7 @@
 # Calculate the statistical results for each country.
 import numpy as np
 import member2
-import part1
+from part1 import part1
 
 def compare_countries(dataset, countries, analysis_class, run_regression, indicator="total"):
     "Use the analysis class and regression function defined in part3.ipynb"
@@ -92,41 +92,33 @@ def display_comparison(results):
         if len(results) < 2:
             return
         ranked_results = sorted(results,key=slope_magnitude, reverse=True)
-
-
-        # List the selected countries and keep the sign of each regression slope.
+        
         print("\nGDP Sensitivity Ranking")
-        previous_magnitude = None
-        rank = 1
-        for position, result in enumerate(ranked_results, start=1):
-            magnitude = slope_magnitude(result)
-            if magnitude !=previous_magnitude:
-                rank = position
+        for rank, result in enumerate(ranked_results, start=1):
             print(str(rank) + ".", result["country"] + ":", round(result["slope"], 3))
-            previous_magnitude = magnitude
-
-            # Collect all countries tied for the strongest or weakest response.
-            highest = slope_magnitude(ranked_results[0])
-            lowest = slope_magnitude(ranked_results[-1])
-            strongest = []
-            weakest = []
-            for result in ranked_results:
+            
+        # Collect all countries tied for the strongest or weakest response.
+        highest = slope_magnitude(ranked_results[0])
+        lowest = slope_magnitude(ranked_results[-1])
+        strongest = []
+        weakest = []
+        for result in ranked_results:
                 magnitude = slope_magnitude(result)
                 if magnitude == highest:
                     strongest.append(result["country"])
                 if magnitude == lowest:
                     weakest.append(result["country"])
 
-            # Summarise estimated responses for the current selection.
-            if highest == lowest:
+        # Summarise estimated responses for the current selection.
+        if highest == lowest:
                 print("The selected countries have the same estimated response magnitude.")
-            elif len(ranked_results) == 2:
+        elif len(ranked_results) == 2:
                 print(strongest[0], "has a larger estimated unemployment response to GDP growth than", weakest[0] + ",")
-            else:
+        else:
                 print("Strongest estimated response:",",".join(strongest))
                 print("Weakest estimated response:",",".join(weakest))
 
 
             # Return each country's regression slope for ranking.
-            def slope_magnitude(result):
-                return abs(result["slope"])
+def slope_magnitude(result):
+    return abs(result["slope"])
